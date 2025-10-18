@@ -41,6 +41,39 @@
     <script src="/assets/js/pokemon-model.js"></script>
     <script src="/assets/js/poke-api.js"></script>
     <script src="/assets/js/main.js"></script>
+    <script>
+        async function loadPokemonDetails(){
+            const urlParms = new URLSearchParams(window.location.search)
+            const pokemonNumber = urlParms.get("number")
+            const pokemon = new Pokemon()
+            pokemon.number = pokemonNumber
+            await pokemon.fetchDetails()
+
+            const detailsSection = document.getElementById("pokemonDetails")
+            detailsSection.classList.add(pokemon.type)
+            detailsSection.innerHTML = 
+            `
+                <h2>${pokemon.name}</h2>
+                <p>Number: ${pokemon.number}</p>
+                <div class="detail">
+                    <ol class="types">
+                        ${pokemon.types
+                          .map((type) => `<li class="type ${type}">${type}</li>`)
+                          .join("")}
+                    </ol>
+                </div>
+                
+                <p>Height: ${pokemon.height}</p>
+                <p>Weight: ${pokemon.weight}</p>
+                <p>Abilities: ${pokemon.abilities.join(", ")}</p>
+                
+                <img src="${pokemon.photo}" alt="${pokemon.name}">
+                
+                <button onclick="window.history.back()">Back</button>
+            `
+        }
+        loadPokemonDetails()
+    </script>   
 </body>
 
-</html>
+</html> 
